@@ -1,0 +1,29 @@
+The term \textit{Motion Primitives} has its roots in neurobiology and motor control, where researchers
+explain the execution of complex motion of biological systems and their ability to adapt to different types of motion effortlessly.
+The Dynamic Motion Primitives formulation is one among the many that use the popular approach in \textit{Robot Learning} called Learning from Demonstrations, which uses the demonstrations given by a 
+human in some form (teleoperation, kinesthetic control etc\dots) and learn from it to scale to different tasks for robot to perform.
+% ! TODO: Add more details and cite the LFD article. 
+In this respect, DMPs attempt to answer the question:
+
+\begin{quote}
+    \centering
+    \textit{How artificial systems can execute
+complex movements in a versatile and creative manner?\cite{saveriano2021dynamic}}
+\end{quote}
+
+Thus, Dynamic Motion Primitives (DMPs) can be seen as rigorous mathematical formulation of motion primitives as stable nonlinear dyanmical systems.
+
+\section{Dynamic Motion Primitives}
+
+At the heart of DMP lies a spring mass damper system.
+
+\begin{equation}
+    \tau \ddot{y} = \alpha \left( -\beta \left( y - y_g \right) - \dot{y} \right) + f(x)
+    \label{eq:dmp_equation}
+\end{equation}
+
+where, $\alpha$ and $\beta$ are the constants of the spring mass damper system, $y_g$ is the goal state of the system.
+This system was first introduced A.J. Ijspeert and his group in \cite{Ijspeert2002} and was further developed in 2013 in \cite{Ijspeert2013}.
+
+
+

@@ -1,0 +1,34 @@
+\documentclass[12pt,A4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{biblatex}
+\usepackage{amsmath}
+\addbibresource{references.bib}
+\usepackage[width=150mm,top=35mm,bottom=25mm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}% <- use fancyplain instead fancy
+
+\fancyhead[R]{\thepage}
+\cfoot{}
+
+
+\title{Obstacle Avoidance using Dynamic Movement Primitives}
+\author{Varad Vaidya}
+\date{September 2021}
+
+\begin{document}
+\pagenumbering{roman} 
+
+\tableofcontents
+
+\chapter{Introduction}
+\pagenumbering{arabic} 
+\input{chapters/introduction}
+% \input{titlepage}
+
+
+\end{document}
