@@ -5,30 +5,44 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{float}
-\usepackage{biblatex}
+\usepackage[]{biblatex}
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{bm}
 \addbibresource{references.bib}
 \usepackage[width=150mm,top=35mm,bottom=25mm]{geometry}
+\usepackage[justification=centering]{caption}
 \usepackage{fancyhdr}
-\pagestyle{fancy}% <- use fancyplain instead fancy
+\usepackage{subcaption}
 
-\fancyhead[R]{\thepage}
+%% !commands
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\thispagestyle{empty}
+\pagestyle{fancyplain}
+\lhead[\rm\thepage]{\fancyplain{}{\nouppercase{\sl{\rightmark}}}}
+\rhead[\fancyplain{}{\nouppercase{\sl{\leftmark}}}]{\rm\thepage}
+\chead{}\lfoot{}\rfoot{}\cfoot{}
 \cfoot{}
-
 
 \title{Obstacle Avoidance using Dynamic Movement Primitives}
 \author{Varad Vaidya}
 \date{September 2021}
 
 \begin{document}
+\input{titlepage}
 \pagenumbering{roman} 
 
 \tableofcontents
 
-\chapter{Introduction}
+\chapter{Dynamic Motion Primitives}
 \pagenumbering{arabic} 
-\input{chapters/introduction}
-% \input{titlepage}
+\input{chapters/dmp.tex}
 
-
+\chapter{Orientation Dynamic Motion Primitives}
+\input{chapters/quaternion.tex}
+\chapter{Cartesian Dynamic Motion Primitives}
+\input{chapters/cartesian.tex}
+% \printbibliography
 \end{document}
