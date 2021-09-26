@@ -126,7 +126,146 @@ The resultant DMP trajectory simulated in DMP is shown in Fig. \ref{fig:joint_tr
 
 \end{figure}
 
-\section{6DOF }
+\section{Orientation DMP}
+As mentioned previously, unlike Cartesian positions, the elements of orientation representations are constrained.
+And these constraints need to be enocded in the the tranformation system of DMPs.
+
+There are many ways in which the orientation are represented. In this work, we will use the quaternion representation.
+
+\subsection{Quaternion Representation of DMP}
+A quaternion or unit quaternion $\vect{q} = v + \vect{u}$ provides a representation of the orinetation of robots end effector, where The DMP equations for unit quaternion can be represented as:
+
+\begin{align}
+    \tau \vect{\dot{\eta}} &= \alpha_z(\beta_z * 2 * log(\vect{g_q} * \bar{\vect{q}}) - \vect{\eta}) + \vect{f_q(x)} \\
+    \tau \vect{\dot{q}} &= \frac{1}{2} \vect{\eta} * \vect{q}
+\end{align}
+where, $\vect{g_q} \in \S^3 $ is the goal orientation, the quaternion conjugate is defined as $\vect{\bar{q}} = v - \vect{u}
+\text{and} *$ denotes quaternion multiplication. $\eta$ is the scaled angular velocity $\omega$ and is
+treated as unit quaternion with xero scalar component. The logaritminc mapping is defined as:
+
+\begin{equation}
+\log{\vect{q}} = 
+\begin{dcases}
+  \arccos{(v)} \ddfrac{\vect{u}}{||u||} &  \vect{u} \neq 0 \\
+  0           &  \text{otherwise} 
+\end{dcases}
+\end{equation}
+
+The above equations are based on the fact that the unit quaternion that takes $\vect{q_1}$ to $\vect{q_2}$
+is given by $\Delta \vect{q} = \vect{q_2} * \vect{\bar{q_1}}$.Unlike with Rotation Matrices the logaritminc mapping defined on $\S^3$ has no discontinuity boundary, just a single singularity
+at a sinlg e quaternion $\vect{q} = -1 + [0,0,0]^T $.
+
+The nonlinear forcing term is defined similar to the standard discrete DMP, and is as follows:
+
+\begin{equation}
+    \vect{f_q(x)} = \ddfrac{\sum\limits_{i=1}^{N} w_i^o \Psi_i(x)}{\sum\limits_{i=1}^N \Psi_i(x)} = 
+    \tau \vect{\dot{\eta}} - \alpha_z \left(  \beta_z * 2 * \log{ \left(  \vect{g_q} * \bar{\vect{q}}\right) } - \vect{\eta} \right)
+\end{equation}
+where, $w_i^0$ is the weights related to the orientation DMP, and like the discrete DMP can be solved using similar weight calculation methods.
+
+To create a DMP system to reach a desired orientation, we created a orientation trajectory of quaternions using Spherical Liner Interpolation
+(SLERP). In SLERP, the quaternions are interpolated using the following formula:
+
+\begin{equation}
+    \text{SLERP} = \vect{q_0} \left( \vect{q_0^{-1} q_1} \right)^t
+\end{equation}
+where $\vect{q_0}$ is the initial quaternion, $\vect{q_1}$ is the goal quaternion, and$\vect{q_0^-1 q_1}$ is 
+the quaternion that takes the initial quaternion to the final quaternion. The results of the quaternion DMP where 
+$\vect{q_0} =[0.70710678,0,-0.70710678,0] $  is interpolated to 
+$\vect{q_g} = [0.37796447 , 0.75592895  ,0.37796447, -0.37796447]$ is shown below.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{quaternionDMP.png}
+\caption{Quaternion DMP}
+\label{fig:quaternionDMP}
+\end{figure}
+
+
+
+
+\section{6DOF DMP}
+A robot can truley make most use of its workspace by moving in both cartesian and orientation space. 
+Thus it becomes inportant to implement DMP in 6 DOF.We combined DMPs in Cartesian and Orientation space mentioned in the previous sections to create a 6DOF DMP.
+To make the implementation simpler, the demostrated trajectory, in position and orientatinon space is recorded and rolled out seperately,
+then the trajectory followed by the DMP system is then achieved via a cartesian velocity controller. In this section, the robot was moved between initial position [0.4,-0.2,0.8] with 
+orientation [-0.17494102, 0.68512454 , -0.17494102 , 0.68512454] 
+to final position [-0.2,0.4,1] with orientation [0.2474,-0.1,0.1,0.9689]. The results of this is shown below.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width= 0.5 \linewidth]{6dof_pos_traj.png}\quad
+    \includegraphics[width= 0.4 \linewidth]{6dof_quat_traj.png}
+
+    \medskip
+
+    \includegraphics[height= 0.5 \linewidth]{6dof_3D_traj.png}
+
+    \caption{3D DMP trajectory simulated on Kuka LBR iiwa 7 axis industrial robot}
+    \label{fig:3D_only_taj_pybullet}
+\end{figure}
+
+
+% \begin{figure}[h]
+%     \centering
+%     \begin{subfigure}{0.5\textwidth}
+%         \includegraphics[width=1 \linewidth]{6dof_pos_traj.png}
+%         \caption{3D DMP trajectory}
+%         \label{fig:6DOF_traj}
+%     \end{subfigure}%
+%     \begin{subfigure}{0.5\textwidth}
+%         \centering
+%         \includegraphics[height=0.8 \linewidth]{6dof_quat_traj.png}
+%         \caption{Orientation DMP trajecoctory}
+%         \label{fig:6DOF_quat_traj}
+%     \end{subfigure}
+%     \caption{6DOF DMP trajectory}
+%     \label{fig:}
+% \end{figure}
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[height=0.5\linewidth]{6dof_3D_traj.png}
+%     \caption{3D DMP trajectory for 6DOF DMP}
+% \end{figure}
+
+This tranjectory was then simulated via Pybullet. Cartesian velocity controller was used to achieve the desired trajectory.
+A description of the the controller used is given below.
+
+\begin{equation}
+    \vect{\dot{q}} = J^{-1} \left( \vect{K_p} (\vect{x_d} - \vect{x}) \right)
+\end{equation}
+where $J$ is the geometric Jacobian of the system, and $x_d$,$x$ are the desired and current pose of the system. The error 
+between the desired and current quaternion in the pose difference is calculated from Eq. \ref{eq:quat_error} , and only the vector term is used
+\begin{equation}\label{quat_error}
+    \Delta \vect{q} = \vect{q_{des}} * \vect{\bar{q}}
+\end{equation}
+in the controller. The sign of the real part of the quaternion difference can be multippled to ensure that shortest rotation is followed.
+The tuning parameters were, $K_p$ = [55, 55, 55, 44, 44, 44].
+The results of the pybullet simulation are shown below.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width= 0.3 \textwidth]{6dof_pybullet1_cropped0.png}\quad
+    \includegraphics[width= 0.3 \textwidth]{6dof_pybullet2_cropped0.png}\quad
+    \includegraphics[width= 0.3 \textwidth]{6dof_pybullet3_cropped0.png}
+
+    \medskip
+
+    \includegraphics[width= 0.3 \textwidth]{6dof_pybullet4_cropped0.png}\quad
+    \includegraphics[width= 0.3 \textwidth]{6dof_pybullet5_cropped0.png}
+
+    \caption{6DOF DMP trajectory simulated on Kuka LBR iiwa }
+    \label{fig:6DOF_traj_pybullet}
+\end{figure}
+
+Next we considered the extension of Dynamic Movement Primitives in the case of Obstacle Avoidance.
+
+
+
+
+
+
 
 
 
