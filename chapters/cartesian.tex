@@ -128,9 +128,9 @@ The resultant DMP trajectory simulated in DMP is shown in Fig. \ref{fig:joint_tr
 
 \section{Orientation DMP}
 As mentioned previously, unlike Cartesian positions, the elements of orientation representations are constrained.
-And these constraints need to be enocded in the the tranformation system of DMPs.
+And these constraints need to be encoded in the transformation system of DMPs.
 
-There are many ways in which the orientation are represented. In this work, we will use the quaternion representation.
+There are many ways in which the orientation is represented. In this work, we will use the quaternion representation.
 
 \subsection{Quaternion Representation of DMP}
 A quaternion or unit quaternion $\vect{q} = v + \vect{u}$ provides a representation of the orinetation of robots end effector, where The DMP equations for unit quaternion can be represented as:
@@ -185,12 +185,12 @@ $\vect{q_g} = [0.37796447 , 0.75592895  ,0.37796447, -0.37796447]$ is shown belo
 
 
 \section{6DOF DMP}
-A robot can truley make most use of its workspace by moving in both cartesian and orientation space. 
-Thus it becomes inportant to implement DMP in 6 DOF.We combined DMPs in Cartesian and Orientation space mentioned in the previous sections to create a 6DOF DMP.
-To make the implementation simpler, the demostrated trajectory, in position and orientatinon space is recorded and rolled out seperately,
+A robot can truly make the most use of its workspace by moving in both cartesian and orientation space. 
+Thus it becomes important to implement DMP in 6 DOF. We combined DMPs in Cartesian and Orientation space mentioned in the previous sections to create a 6DOF DMP.
+To make the implementation simpler, the demonstrated trajectory, in position and orientation space is recorded and rolled out separately,
 then the trajectory followed by the DMP system is then achieved via a cartesian velocity controller. In this section, the robot was moved between initial position [0.4,-0.2,0.8] with 
 orientation [-0.17494102, 0.68512454 , -0.17494102 , 0.68512454] 
-to final position [-0.2,0.4,1] with orientation [0.2474,-0.1,0.1,0.9689]. The results of this is shown below.
+to final position [-0.2,0.4,1] with orientation [0.2474,-0.1,0.1,0.9689]. The results of this are shown below.
 
 \begin{figure}[h]
     \centering
@@ -229,15 +229,15 @@ to final position [-0.2,0.4,1] with orientation [0.2474,-0.1,0.1,0.9689]. The re
 %     \caption{3D DMP trajectory for 6DOF DMP}
 % \end{figure}
 
-This tranjectory was then simulated via Pybullet. Cartesian velocity controller was used to achieve the desired trajectory.
-A description of the the controller used is given below.
+This trajectory was then simulated via Pybullet. A cartesian velocity controller was used in achieving the desired trajectory.
+A description of the controller used is given below.
 
 \begin{equation}
     \vect{\dot{q}} = J^{-1} \left( \vect{K_p} (\vect{x_d} - \vect{x}) \right)
 \end{equation}
 where $J$ is the geometric Jacobian of the system, and $x_d$,$x$ are the desired and current pose of the system. The error 
 between the desired and current quaternion in the pose difference is calculated from Eq. \ref{eq:quat_error} , and only the vector term is used
-\begin{equation}\label{quat_error}
+\begin{equation}\label{eq:quat_error}
     \Delta \vect{q} = \vect{q_{des}} * \vect{\bar{q}}
 \end{equation}
 in the controller. The sign of the real part of the quaternion difference can be multippled to ensure that shortest rotation is followed.

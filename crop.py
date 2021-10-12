@@ -8,13 +8,13 @@ def crop_image(img, crop_area, new_filename):
     cropped_image.save(new_filename)
 
 # The x, y coordinates of the areas to be cropped. (x1, y1, x2, y2)
-crop_areas = [(760, 300, 1160, 600)]
+crop_areas = [(600, 200, 1200, 600)]
 
-image_names = ['images/6dof_raw/6dof_pybullet1.png',
-              'images/6dof_raw/6dof_pybullet2.png',
-              'images/6dof_raw/6dof_pybullet3.png',
-              'images/6dof_raw/6dof_pybullet4.png',
-              'images/6dof_raw/6dof_pybullet5.png']
+image_names = ['images/singlePB_raw/singlePB1.png',
+              'images/singlePB_raw/singlePB2.png',
+              'images/singlePB_raw/singlePB3.png',
+              'images/singlePB_raw/singlePB4.png',
+              'images/singlePB_raw/singlePB5.png',]
 
 for image_name in image_names:
     
