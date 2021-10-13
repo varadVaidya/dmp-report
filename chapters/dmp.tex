@@ -22,16 +22,17 @@ At the heart of DMP lies a spring mass damper system.
     \label{eq:dmp_equation}
 \end{equation}
 
-where, $\alpha$ and $\beta$ are the constants of the spring mass damper system, $y_g$ is the goal state of the system. To avoid overshooting or slow convergence of the system to the goal state,
+where $\alpha$ and $\beta$ are the constants of the spring mass damper system, $y_g$ is the goal state of the system. To avoid overshooting or slow convergence of the system to the goal state,
 the system is set to be critically damped. Thus in the DMP notation, $\beta=\alpha/4$. This determine the value of $\beta$ for a given value of $\alpha$.
 
-The infulence of $\alpha$ on the DMP system can be seen in Fig.
+The infulence of $\alpha$ on the DMP system can be seen in Fig. \ref{fig:dmp_alpha_influence}.
 
 % ! TODO: add figure for the dependance of alpha on the system. MAYBE USE DESMOS FOR THE SAME.???
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{dmp_alpha.png}
     \caption{DMP system with different values of $\alpha$} % edit with influence.
+    \label{fig:dmp_alpha_influence}
 \end{figure}
 
 This representation has properties such as convergence to goal state and robutnesss to external perburtation but
@@ -39,8 +40,8 @@ can only represent very simple movements. To solve this we add a time dependaant
 along with the forcing term is called as \textit{transformation system}.
 
 After adding forcing term to our sping damp system, the we can no longer gurantee the convergence property and the tranformation system is no longer time independant.
-To solve the later we let $f$ be a function of a phase variable $x$ representing the phase of the movement. Ijspeert2002  used a first order dynamical system
-to model the phase variable, coing the term \textit{canonical system}.
+To solve the later we let $f$ be a function of a phase variable $x$ representing the phase of the movement. A first order dynamical system
+was used to model the phase variable in \cite{Ijspeert2002}, coining the term \textit{canonical system}.
 
 Thus the complete Dynamic Motion Primitives system is given by:
 
@@ -80,12 +81,12 @@ We can define the venters and widths as
     h_i &= \ddfrac{1}{(c_{i+1} - c_i)^2}
 \end{align}
 where $h_N = h_{N-1}$. The selection of the number of weights and hence the RBF's is decided based on the accuracy required.
-But it is observed that a certain minimum number of RBF's is required to encode the trajectory any meaningful manner.
+But it is observed that a certain minimum number of RBF's is required to encode the trajectory any meaningful manner\cite{saveriano2021dynamic}.
 
 % %% ^ Section header for Learning the demonstration.
 \section{Learning from demonstration}
 For a discrete motion, given a demostrated trajectory $y_d(t_j)$, where $t_j = 1, \dots , \mathcal{T}$ is the number of time steps, and 
-its time derivatives $\dot{y}(t_j)$ and $\ddot{y}(t_j)$, we can invert eqn \eqref{Tsystem} to approximate
+its time derivatives $\dot{y}(t_j)$ and $\ddot{y}(t_j)$, we can invert equation \eqref{Tsystem} to approximate
 the desired forcing term.
 
 \begin{equation}
@@ -118,14 +119,15 @@ where,
     \includegraphics[width=0.8\textwidth]{1D_traj.png}
     \caption{A classical DMP is used to reproduce the trajectory of $x(t) = sin(t)$ for a total time of 3 seconds.} % replace the images with actual contect,
 \end{figure}
-This system can be solved by using various techniques such as the Least squares method, Locally Weighted Regression(LWR) etc.
+This system can be solved by using various techniques such as the Least squares method, Locally Weighted Regression(LWR)\cite{LWR_paper} etc.
 LWR is a popular approach to update the weights $w_i$ learned from the previous demonstration, using the error between the learned trajectory a
 and desired trajectory by using a forgetting factor $\lambda$. In this project work, Least squares methods was used as it approximated test results accuratly.
 
 \section{Temporal and Spatial Scalability of DMP}
 
 The most important feature of DMP is that once trained on a certain training trajectory, it can replicate the trajectory
-even when the goal and initial conditions are changed and follow it without requiring any additional training to train the weights. This is called
+even when the goal and initial conditions are changed and follow it without requiring any additional training to train the weights\cite{Ijspeert2013}
+\cite{ginesi2021overcoming}. This is called
 as \textit{spatial scalability} of DMP.
 
 \begin{figure}[h]
@@ -143,5 +145,5 @@ This is called \textit{temporal scalability} of DMP. The time constant $\tau$ is
 
 This property when mixed with joint DMP can provide a method for online adaptation of desired trajectory in robotic manipulators and other robotic systems.
 
-This framework of DMP is called Discrete DMP. One of its main disadvantages is that it cannot enocde the orientation of the trajectory into the system.
+This framework of DMP is called Discrete DMP. One of its main disadvantages is that it cannot encode the orientation of the trajectory into the system.
 As such a new set of equations are transofrmaiton systems are created to handle this issues.

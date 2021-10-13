@@ -15,9 +15,10 @@
 \usepackage[justification=centering]{caption}
 \usepackage{fancyhdr}
 \usepackage{subcaption}
+\usepackage{svg}
 
 %% !commands
-\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+\newcommand{\ddfrac}[2]{\frac{\displaystyle #1}{\displaystyle #2}}
 \newcommand{\vect}[1]{\boldsymbol{#1}}
 \thispagestyle{empty}
 \pagestyle{fancyplain}
@@ -40,12 +41,13 @@
 \chapter{Dynamic Motion Primitives}
 \input{chapters/dmp.tex}
 
-% \chapter{Orientation Dynamic Motion Primitives}
-% \input{chapters/quaternion.tex}
 \chapter{Cartesian Dynamic Motion Primitives}
 \input{chapters/cartesian.tex}
 
 \chapter{Obstacle Avoidance using Dynamic Motion Primitives}
 \input{chapters/obstacleAvoid.tex}
-% \printbibliography
+
+\chapter{Conclusion and Future Work}
+\input{chapters/future_work.tex}
+\printbibliography
 \end{document}

@@ -8,7 +8,7 @@ dynamic potential field as an attraction-repulsion system, to avoid obstacles.
 
 \section{Potential Fields for Obstacle Avoidance}
 \subsection{Static Potential Fields}
-The concept of the potential field was first introduced by Khataib. Here each obstacle acts as a repulsive potential field 
+The concept of the potential field was first introduced by Khatib\cite{khatibArtificial}. Here each obstacle acts as a repulsive potential field 
 defined by Eq (\ref{eq:khatibField}). Hence the obstacle "exerts" a force on the robot, given by the gradient of the potential field,
 i.e. $\vect{\varphi(x)} = -\nabla U(x)$.
 
@@ -28,7 +28,7 @@ This robot external force is then added to the trandoformation system of DMP whi
     \tau \dot{z} = \alpha_z (\beta_z \left( z - z_g \right) - \dot{z}) + f(x) + \vect{\varphi(x,v)}
 \end{equation}
 
-Peter Pastor showed that this method did not allow for smooth obstacle avoidance, and proposed a new method
+This method did not allow for smooth obstacle avoidance as shown in \cite{peterOG}, and proposed a new method
 which we implemented in this work.
 \subsection{Dynamic Potential Fields}
 The dynamic potential field is a function of the robots (or its end effectors) position $\vect{x}$ 
@@ -83,7 +83,7 @@ due to the presence of local minima in the potential field.
 The above formulation like the previous results is implemented in Python and simulated in Pybullet.
 
 \subsection{2D Obstacle Avoidance}
-A minimum acceleration trajectory between the initial and goal position of [-3,2] to [3,-2] with initial velocity of [-1,0]. The obstacle
+A minimum acceleration trajectory between the initial and goal position of [-3,2] to [3,-2] with an initial velocity of [-1,0]. The obstacle
 is placed at the origin. The desired trajectory passes close to the obstacle and the force field from the obstacle makes sure that
 the robot avoids the obstacle.
 
@@ -144,9 +144,9 @@ as demonstrated in Figure \ref{fig:obsAvoid2Dfar}. The parameters for the dynami
     \caption{Obstacle Avoidance in 2D and the deviation due to obstacle when the obstacle is far away from the demonstrateed trajcetory}
     \label{fig:obsAvoid2Dfar}
 \end{figure}
-\subsubsection{Moving Obstacle Avoidance}
+\subsubsection{Moving Obstacle Avoidance} 
 To demonstrate the ability to avoid moving obstacles, an obstacle is placed at origin and is moved with a constant velocity of [-0.1,-0.1],
-with the parameter $\lambda = 10 \text{ and } \beta = 2$. The demonstraed trajectory is kept the same. The results of whoch can be seen below.
+with the parameter $\lambda = 10 \text{ and } \beta = 2$. The demonstrated trajectory is kept the same. The results of which can be seen below.
 
 \begin{figure}[!htp]
     \centering
@@ -167,9 +167,9 @@ The green path is the trajectory simulated by the DMP to follow the blue demonst
 
 
 
-\subsection{3D Obstacle Avoidance}
-The similar structure used in the 2D case is used in the 3 dimensional space. A minuimum acceleration trajectory is demonstrated 
-between the points [3,2,3] to [-4,-5,-3] with initial velocity of [-1,0,-1.3], where the obstacle is placed at the origin. The 
+\subsection{Task Space Obstacle Avoidance}
+The similar structure used in the planar case is used in the task space. A minimum acceleration trajectory is demonstrated 
+between the points [3,2,3] to [-4,-5,-3] with an initial velocity of [-1,0,-1.3], where the obstacle is placed at the origin. The 
 parameters for the potential field in this case are, $\lambda = 5 \text{ and } \beta = 2$.
 
 \begin{figure}[!htp]
@@ -189,25 +189,88 @@ parameters for the potential field in this case are, $\lambda = 5 \text{ and } \
     \label{fig:obsAvoid3Dfar}
 \end{figure}
 
-
-
-
-
-
-
+This implementation of 3D obstacle avoidance is also implemented on Pybullet, where we avoid a spherical obstacle
+placed near the origin at [0,0.03,0.65] on a table, where we move the end-effector of the robot from [-0.3,0.2,0.71] to [0.3,-0.2,0.71].
+The robot as mentioned before is controlled via velocity control. The results of the simulation can be seen below.
 \begin{figure}[!htp]
     \centering
-    \includegraphics[width= 0.32 \textwidth]{singlePB1_cropped.png}\quad
-    \includegraphics[width= 0.32 \textwidth]{singlePB2_cropped.png}\quad
-    \includegraphics[width= 0.32 \textwidth]{singlePB3_cropped.png}
+    \includegraphics[width= 0.3 \textwidth]{singlePB1_cropped.png}\quad
+    \includegraphics[width= 0.3 \textwidth]{singlePB2_cropped.png}\quad
+    \includegraphics[width= 0.3 \textwidth]{singlePB3_cropped.png}
 
     \medskip
 
-    \includegraphics[width= 0.32 \textwidth]{singlePB4_cropped.png}\quad
-    \includegraphics[width= 0.32 \textwidth]{singlePB5_cropped.png}
+    \includegraphics[width= 0.3 \textwidth]{singlePB4_cropped.png}\quad
+    \includegraphics[width= 0.3 \textwidth]{singlePB5_cropped.png}
 
     \caption{3D obstacle avoidance of obstacles in Pybullet}
     \label{fig:pybulletsingleObs}
+\end{figure}
+
+\subsubsection{Multiple Obstacle Avoidance}
+As described in the section, multiple point like obstacles can be avoided via the same formulation. The result 
+of this extended formulation is shown below.
+
+\begin{figure}[!htp]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=1 \linewidth]{multiObs2D_traj.png}
+        \caption{2D multiple obstacle avoidance}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1 \linewidth]{multiObs2D_error.png}
+        \caption{Deviation from the desired trajectory}
+    \end{subfigure}
+    \caption{Obstacle Avoidance in 2D and the deviation due to multiple obstacles from the demonstrateed trajcetory}
+\end{figure}
+
+The same formulation is also implemented in PyBullet, the results of which is shown below.
+\begin{figure}[!htp]
+    \centering
+    \includegraphics[width= 0.3 \textwidth]{multi_1_cropped.png}\quad
+    \includegraphics[width= 0.3 \textwidth]{multi_2_cropped.png}\quad
+    \includegraphics[width= 0.3 \textwidth]{multi_3_cropped.png}
+
+    \medskip
+
+    \includegraphics[width= 0.3 \textwidth]{multi_4_cropped.png}\quad
+    \includegraphics[width= 0.3 \textwidth]{multi_5_cropped.png}
+
+    \caption{3D obstacle avoidance of obstacles in Pybullet}
+    \label{fig:pybulletsingleObs}
+\end{figure}
+
+\subsection{Effect of the parameters: $\lambda$ and $\alpha_z$}
+The parameters $\lambda$ and $\alpha_z$ dictate the way the robot will move in presence of the force field from obstacles.
+
+The effect of $\alpha_z$ is similar to that of a spring, where the stiffness of the movement is directly proportional to $\alpha_z$.
+But the effect of $\lambda$ is interesting. As the value of $\lambda$ increases, the strength of the force fields increases. But after a certain 
+threshold value, the trajectory transversed by the robot will orbit around the obstacle. These effects of these parameters is
+shown in the following figure Fig:\ref{fig:paramEffect}.
+
+\begin{figure}[!htp]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=1 \linewidth]{alpha_effect_20}
+        \caption{DMP motion when $alpha_z = 20$}
+        \label{fig:alpha_effect_20}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1 \linewidth]{alpha_effect_50}
+        \caption{DMP motion when $alpha_z = 50$}
+        \label{fig:alpha_effect_50}
+    \end{subfigure}
+    \caption{Effect of $alpha_z$ on motion when avoiding obstacle}
+    \label{fig:paramEffect}
+\end{figure}
+
+\begin{figure}[!htp]
+    \centering
+    \includegraphics[width=0.6 \textwidth]{lambda_25.png}
+    \caption{Effect of $\lambda$ on motion when avoiding obstacle, here $lambda = 25$. We can clearly see that the the motion is orbiting
+    around the obstacle.}
 \end{figure}
 
 
